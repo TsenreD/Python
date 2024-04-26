@@ -11,8 +11,8 @@ def add_features_history(df: pandas.DataFrame) -> pandas.DataFrame:
     """
     Adds features according to the history parquet section
     """
-    df['cnt_bad_sell'] = df['cnt_not_sell'] >= 1
-    df['cnt_many_takes'] = df['cnt_takes'] >= 4
+    df['cnt_bad_sell'] = df['cnt_not_sell'] >= 1 # если наблюдались непродажи
+    df['cnt_many_takes'] = df['cnt_takes'] >= 4 # если много взятий в работу
     return df
 
 def add_features_user_info(df: pandas.DataFrame) -> pandas.DataFrame:
@@ -20,7 +20,6 @@ def add_features_user_info(df: pandas.DataFrame) -> pandas.DataFrame:
     Adds features according to the user info parquet section
     """
     df['gender_match'] = df['client_gender'] == df['seller_gender']
-    feats = ['gender_match']
 
     return df
 
@@ -28,8 +27,8 @@ def add_features_banks(df: pandas.DataFrame) -> pandas.DataFrame:
     """
     Adds features according to the bank info parquet section
     """
-    df['is_bank_256'] = df['tochka_contractor_bank_top_1'] == 'bank_256'
-    df['big_revenue'] = (df.revenue != '<10000000') & (df.revenue != 'unknown')
+    df['is_bank_256'] = df['tochka_contractor_bank_top_1'] == 'bank_256' # единственный коррелирующий банк
+    df['big_revenue'] = (df.revenue != '<10000000') & (df.revenue != 'unknown') # большая выручка
     df.drop(columns=['tochka_contractor_bank_top_1', 'time_tz_diff'], inplace=True)
 
     return df
